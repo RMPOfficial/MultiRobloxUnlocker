@@ -1,4 +1,4 @@
-﻿#include <iostream>
+#include <iostream>
 #include <string>
 #include <Windows.h>
 
@@ -40,8 +40,10 @@ static bool Choice() {
 
 int main()
 {
+    bool CtrlHandlerError = false;
     if (!SetConsoleCtrlHandler(CtrlHandler, TRUE)) {
-        std::cout << "Error setting CtrlHandler! DO NOT CLOSE DIRECTRY THE PROGRAM OR PRESS Ctrl+C !\n\n";
+        std::cout << "Error setting CtrlHandler! DO NOT CLOSE DIRECTLY THE PROGRAM OR PRESS Ctrl+C !\n\n";
+        CtrlHandlerError = true;
     }
     std::cout << "Welcome to a simple program made by @RMP_Official\nThis program allow opening multiple instances of roblox by creating a mutex!\n\nCreating a mutex..\n";
     hMutex = CreateMutex(0, 1, L"ROBLOX_singletonEvent");
@@ -51,10 +53,9 @@ int main()
         system("pause");
         return 1;
     }
-    std::cout << "Mutex sucessfully created, dont close this program while you play roblox!\n";
-	std::cout << "\nClose the program, press Ctrl+C or press ENTER when you finished playing: ";
+    std::cout << "Mutex successfully created, don't close this program while you play roblox!\n";
+	std::cout << (CtrlHandlerError ? "Press ENTER to close the program" : "\nClose the program, press Ctrl+C or press ENTER") << " when you finish playing: ";
     system("pause");
-end:
 	if (hMutex) {
         ReleaseMutex(hMutex);
         CloseHandle(hMutex);
